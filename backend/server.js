@@ -41,6 +41,23 @@ app.post("/api/products", async (req, res) => {
   }
 })
 
+app.delete("/api/products/:id", async (req, res) => {
+  const {id} = req.params;
+  try {
+    await Product.findByIdAndDelete(id);
+    res.status(200).json({
+      success: true,
+      message: 'Product deleted.',
+    })
+  } catch (error) {
+    console.error(`Error in creating product: ${error.message}`)
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+})
+
 app.listen(5000, () => {
   connectDB();
   console.log("Server started at https://localhost:5000");
