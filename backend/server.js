@@ -12,6 +12,19 @@ app.get("/", (req, res) => {
   res.send("Server is ready!")
 })
 
+app.get("/api/products", async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.status(200).json(products);
+  } catch (error) {
+    console.error(`Error in fetching product: ${error.message}`)
+    return res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+})
+
 app.post("/api/products", async (req, res) => {
   const product = req.body;
 
@@ -50,7 +63,7 @@ app.delete("/api/products/:id", async (req, res) => {
       message: 'Product deleted.',
     })
   } catch (error) {
-    console.error(`Error in creating product: ${error.message}`)
+    console.error(`Error in deleting product: ${error.message}`)
     return res.status(500).json({
       success: false,
       message: "Server error",
